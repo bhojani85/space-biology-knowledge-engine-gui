@@ -53,8 +53,8 @@ export default function ChatbotInterface() {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <ScrollArea className="flex-1 pr-2 sm:pr-4 mb-3 sm:mb-4">
+    <div className="flex flex-col h-full min-h-0">
+      <div className="flex-1 overflow-auto min-h-0 pr-2 sm:pr-4 mb-3 sm:mb-4">
         <div className="space-y-3 sm:space-y-4">
           {messages.map((message) => (
             <div
@@ -96,9 +96,9 @@ export default function ChatbotInterface() {
             </div>
           )}
         </div>
-      </ScrollArea>
+      </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 shrink-0">
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}

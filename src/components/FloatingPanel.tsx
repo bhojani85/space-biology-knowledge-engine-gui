@@ -26,17 +26,17 @@ export default function FloatingPanel({
   return (
     <Card 
       className={cn(
-        'bg-black/80 backdrop-blur-xl border-2 transition-all duration-300 hover:scale-[1.01] sm:hover:scale-[1.02]',
+        'bg-black/80 backdrop-blur-xl border-2 transition-all duration-300 hover:scale-[1.01] sm:hover:scale-[1.02] flex flex-col',
         glowStyles[glowColor],
         className
       )}
     >
-      <div className="p-3 sm:p-4 border-b border-white/10">
+      <div className="p-3 sm:p-4 border-b border-white/10 shrink-0">
         <h3 className="text-sm sm:text-base md:text-lg font-bold text-cyan-400 tracking-wide uppercase">
           {title}
         </h3>
       </div>
-      <div className="p-3 sm:p-4">
+      <div className="p-3 sm:p-4 flex-1 overflow-auto min-h-0">
         {children}
       </div>
     </Card>

@@ -31,17 +31,17 @@ export default function Home() {
         {/* Floating Panels Grid */}
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
           {/* Left Panel - Datasets */}
-          <FloatingPanel title="NASA Datasets" glowColor="green" className="h-[400px] sm:h-[500px] lg:h-[600px] overflow-hidden">
+          <FloatingPanel title="NASA Datasets" glowColor="green" className="h-[400px] sm:h-[500px] lg:h-[600px]">
             <DatasetBrowser />
           </FloatingPanel>
 
           {/* Center Panel - Chatbot */}
-          <FloatingPanel title="AI Research Assistant" glowColor="cyan" className="h-[400px] sm:h-[500px] lg:h-[600px] flex flex-col">
+          <FloatingPanel title="AI Research Assistant" glowColor="cyan" className="h-[400px] sm:h-[500px] lg:h-[600px]">
             <ChatbotInterface />
           </FloatingPanel>
 
           {/* Right Panel - User Dashboard */}
-          <FloatingPanel title="User Dashboard" glowColor="cyan" className="h-[400px] sm:h-[500px] lg:h-[600px] overflow-hidden">
+          <FloatingPanel title="User Dashboard" glowColor="cyan" className="h-[400px] sm:h-[500px] lg:h-[600px]">
             <UserDashboard />
           </FloatingPanel>
         </div>
