@@ -1,11 +1,10 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
-import { ScrollArea } from './ui/scroll-area'
 import { Badge } from './ui/badge'
-import { Send, Sparkles } from 'lucide-react'
+import { Send, Sparkles, ArrowDown } from 'lucide-react'
 
 interface Message {
   id: string
@@ -25,6 +24,29 @@ export default function ChatbotInterface() {
   ])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showScrollButton, setShowScrollButton] = useState(false)
+  
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  // Auto-scroll to bottom when new messages arrive
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  // Check if user is near bottom
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100
+      setShowScrollButton(!isNearBottom)
+    }
+  }
+
+  // Auto-scroll when messages change
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   const handleSend = async () => {
     if (!input.trim()) return
@@ -54,7 +76,15 @@ export default function ChatbotInterface() {
 
   return (
     <div className="flex flex-col h-full min-h-0">
-      <div className="flex-1 overflow-auto min-h-0 pr-2 sm:pr-4 mb-3 sm:mb-4">
+      <div 
+        ref={scrollContainerRef}
+        onScroll={handleScroll}
+        className="flex-1 overflow-auto min-h-0 pr-2 sm:pr-4 mb-3 sm:mb-4 scrollbar-hide"
+        style={{
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+        }}
+      >
         <div className="space-y-3 sm:space-y-4">
           {messages.map((message) => (
             <div
@@ -95,8 +125,20 @@ export default function ChatbotInterface() {
               </div>
             </div>
           )}
+          <div ref={messagesEndRef} />
         </div>
       </div>
+
+      {/* Scroll to Bottom Button */}
+      {showScrollButton && (
+        <button
+          onClick={scrollToBottom}
+          className="absolute bottom-16 sm:bottom-20 right-4 sm:right-6 bg-cyan-500/90 hover:bg-cyan-600 text-black rounded-full p-2 sm:p-2.5 shadow-[0_0_20px_rgba(0,255,255,0.6)] transition-all duration-300 animate-in fade-in slide-in-from-bottom-2 z-10"
+          aria-label="Scroll to bottom"
+        >
+          <ArrowDown className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
+      )}
 
       <div className="flex gap-2 shrink-0">
         <Input

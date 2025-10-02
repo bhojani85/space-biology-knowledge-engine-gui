@@ -102,6 +102,16 @@
   canvas {
     display: block;
   }
+
+  /* Hide scrollbar while keeping functionality */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* Hide Next.js error overlay portal */
