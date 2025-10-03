@@ -33,12 +33,55 @@ function Stars() {
       </bufferGeometry>
       <pointsMaterial
         size={0.1}
-        color="#ffffff"
+        color="#888888"
         transparent
-        opacity={0.8}
+        opacity={0.6}
         sizeAttenuation
       />
     </points>
+  )
+}
+
+function Centroids() {
+  const centroidsRef = useRef<THREE.Group>(null)
+
+  useFrame((state) => {
+    if (centroidsRef.current) {
+      centroidsRef.current.children.forEach((centroid, i) => {
+        const time = state.clock.getElapsedTime()
+        centroid.position.x = Math.sin(time * 0.3 + i) * 15
+        centroid.position.y = Math.cos(time * 0.2 + i) * 10
+        centroid.position.z = Math.sin(time * 0.25 + i) * 8 - 10
+        centroid.rotation.x += 0.01
+        centroid.rotation.y += 0.01
+      })
+    }
+  })
+
+  const shapes = [
+    { geometry: <icosahedronGeometry args={[0.8, 0]} />, position: [0, 0, 0] },
+    { geometry: <octahedronGeometry args={[1, 0]} />, position: [5, 3, -5] },
+    { geometry: <tetrahedronGeometry args={[1.2, 0]} />, position: [-5, -3, -8] },
+    { geometry: <boxGeometry args={[1.5, 1.5, 1.5]} />, position: [8, -2, -6] },
+    { geometry: <dodecahedronGeometry args={[0.9, 0]} />, position: [-8, 4, -7] },
+  ]
+
+  return (
+    <group ref={centroidsRef}>
+      {shapes.map((shape, i) => (
+        <mesh key={i} position={shape.position as [number, number, number]}>
+          {shape.geometry}
+          <meshStandardMaterial
+            color="#9ca3af"
+            emissive="#6b7280"
+            emissiveIntensity={0.3}
+            wireframe
+            transparent
+            opacity={0.4}
+          />
+        </mesh>
+      ))}
+    </group>
   )
 }
 
@@ -55,8 +98,8 @@ function Planet() {
     <mesh ref={planetRef} position={[15, 5, -20]}>
       <sphereGeometry args={[3, 32, 32]} />
       <meshStandardMaterial
-        color="#ff6b35"
-        emissive="#ff6b35"
+        color="#71717a"
+        emissive="#52525b"
         emissiveIntensity={0.3}
         roughness={0.8}
       />
@@ -69,6 +112,7 @@ export default function SpaceBackground() {
     <>
       <ambientLight intensity={0.2} />
       <Stars />
+      <Centroids />
       <Planet />
     </>
   )

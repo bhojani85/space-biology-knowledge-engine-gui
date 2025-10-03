@@ -8,7 +8,7 @@ import { BarChart3 } from 'lucide-react'
 
 export default function StatisticsPage() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-black via-blue-950/20 to-black">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-black via-zinc-900/20 to-black">
       {/* 3D Background Scene */}
       <Scene3D />
 
@@ -20,8 +20,8 @@ export default function StatisticsPage() {
         {/* Header */}
         <header className="text-center mb-6 sm:mb-8 md:mb-12 pt-4 sm:pt-6 md:pt-8">
           <div className="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-            <BarChart3 className="w-5 h-5 sm:w-6 md:w-8 sm:h-6 md:h-8 text-purple-400" />
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            <BarChart3 className="w-5 h-5 sm:w-6 md:w-8 sm:h-6 md:h-8 text-gray-400" />
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300 bg-clip-text text-transparent">
               Data Visualizations
             </h1>
           </div>
@@ -45,7 +45,7 @@ export default function StatisticsPage() {
 
       {/* Grid Overlay */}
       <div className="fixed inset-0 pointer-events-none opacity-10">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.1)_1px,transparent_1px)] bg-[size:30px_30px] sm:bg-[size:40px_40px] md:bg-[size:50px_50px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(156,163,175,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(156,163,175,0.1)_1px,transparent_1px)] bg-[size:30px_30px] sm:bg-[size:40px_40px] md:bg-[size:50px_50px]" />
       </div>
     </div>
   )

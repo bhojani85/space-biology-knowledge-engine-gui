@@ -20,8 +20,8 @@ export default function HolographicOrb() {
     <mesh ref={orbRef} position={[-8, 0, -5]}>
       <icosahedronGeometry args={[2, 1]} />
       <meshStandardMaterial
-        color="#00ffff"
-        emissive="#00ffff"
+        color="#9ca3af"
+        emissive="#6b7280"
         emissiveIntensity={0.5}
         wireframe
         transparent
