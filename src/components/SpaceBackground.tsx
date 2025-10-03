@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 function Stars() {
@@ -66,12 +66,10 @@ function Planet() {
 
 export default function SpaceBackground() {
   return (
-    <div className="fixed inset-0 w-full h-full -z-10">
-      <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
-        <ambientLight intensity={0.2} />
-        <Stars />
-        <Planet />
-      </Canvas>
-    </div>
+    <>
+      <ambientLight intensity={0.2} />
+      <Stars />
+      <Planet />
+    </>
   )
 }
