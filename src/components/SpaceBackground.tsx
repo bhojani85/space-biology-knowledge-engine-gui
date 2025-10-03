@@ -5,54 +5,103 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 export default function SpaceBackground() {
-  const planetRef = useRef<THREE.Mesh>(null)
-  const starsRef = useRef<THREE.Points>(null)
+  const cloudGroup1Ref = useRef<THREE.Points>(null)
+  const cloudGroup2Ref = useRef<THREE.Points>(null)
+  const cloudGroup3Ref = useRef<THREE.Points>(null)
 
   useFrame((state) => {
-    if (planetRef.current) {
-      planetRef.current.rotation.y = state.clock.elapsedTime * 0.05
+    // Slow drifting clouds
+    if (cloudGroup1Ref.current) {
+      cloudGroup1Ref.current.rotation.y = state.clock.elapsedTime * 0.01
+      cloudGroup1Ref.current.position.x = Math.sin(state.clock.elapsedTime * 0.05) * 2
     }
-    if (starsRef.current) {
-      starsRef.current.rotation.y = state.clock.elapsedTime * 0.01
+    if (cloudGroup2Ref.current) {
+      cloudGroup2Ref.current.rotation.y = -state.clock.elapsedTime * 0.015
+      cloudGroup2Ref.current.position.x = Math.cos(state.clock.elapsedTime * 0.03) * 1.5
+    }
+    if (cloudGroup3Ref.current) {
+      cloudGroup3Ref.current.rotation.x = state.clock.elapsedTime * 0.008
+      cloudGroup3Ref.current.position.z = Math.sin(state.clock.elapsedTime * 0.04) * 1
     }
   })
 
-  // Create star field
-  const starCount = 5000
-  const starPositions = new Float32Array(starCount * 3)
-  for (let i = 0; i < starCount * 3; i++) {
-    starPositions[i] = (Math.random() - 0.5) * 200
+  // Create cloud particles
+  const createCloudParticles = (count: number, spread: number) => {
+    const positions = new Float32Array(count * 3)
+    for (let i = 0; i < count * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * spread
+      positions[i + 1] = (Math.random() - 0.5) * spread * 0.5
+      positions[i + 2] = (Math.random() - 0.5) * spread
+    }
+    return positions
   }
 
   return (
     <>
-      {/* Star field */}
-      <points ref={starsRef}>
+      {/* Cloud layer 1 - Close */}
+      <points ref={cloudGroup1Ref} position={[0, 0, -5]}>
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={starCount}
-            array={starPositions}
+            count={1000}
+            array={createCloudParticles(1000, 80)}
             itemSize={3}
           />
         </bufferGeometry>
-        <pointsMaterial size={0.5} color="#ffffff" sizeAttenuation transparent opacity={0.8} />
+        <pointsMaterial 
+          size={3} 
+          color="#e0e7ef" 
+          transparent 
+          opacity={0.4}
+          sizeAttenuation 
+          blending={THREE.AdditiveBlending}
+        />
       </points>
       
-      {/* Distant planet */}
-      <mesh ref={planetRef} position={[-15, 5, -20]}>
-        <sphereGeometry args={[3, 32, 32]} />
-        <meshStandardMaterial
-          color="#6b4ce8"
-          emissive="#6b4ce8"
-          emissiveIntensity={0.2}
-          roughness={0.8}
+      {/* Cloud layer 2 - Middle */}
+      <points ref={cloudGroup2Ref} position={[0, 2, -10]}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={800}
+            array={createCloudParticles(800, 100)}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial 
+          size={4} 
+          color="#cbd5e1" 
+          transparent 
+          opacity={0.3}
+          sizeAttenuation 
+          blending={THREE.AdditiveBlending}
         />
-      </mesh>
+      </points>
 
-      {/* Ambient lighting */}
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[10, 10, 5]} intensity={1} color="#ffffff" />
+      {/* Cloud layer 3 - Far */}
+      <points ref={cloudGroup3Ref} position={[0, -1, -15]}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={600}
+            array={createCloudParticles(600, 120)}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial 
+          size={5} 
+          color="#94a3b8" 
+          transparent 
+          opacity={0.2}
+          sizeAttenuation 
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
+
+      {/* Soft ambient lighting for gloomy weather */}
+      <ambientLight intensity={0.8} color="#b8c6d9" />
+      <directionalLight position={[5, 10, 5]} intensity={0.4} color="#e0e7ef" />
+      <hemisphereLight args={['#bfdbfe', '#94a3b8', 0.6]} />
     </>
   )
 }

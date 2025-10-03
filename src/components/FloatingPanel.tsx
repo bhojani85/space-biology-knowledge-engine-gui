@@ -15,24 +15,25 @@ export default function FloatingPanel({
   title, 
   children, 
   className,
-  glowColor = 'cyan'
+  glowColor = 'blue'
 }: FloatingPanelProps) {
   const glowStyles: Record<string, string> = {
-    cyan: 'shadow-[0_0_30px_rgba(0,255,255,0.3)] border-cyan-500/30',
-    green: 'shadow-[0_0_30px_rgba(0,255,0,0.3)] border-green-500/30',
-    purple: 'shadow-[0_0_30px_rgba(139,92,246,0.3)] border-purple-500/30',
+    cyan: 'shadow-[0_0_30px_rgba(59,130,246,0.2)] border-blue-400/40',
+    blue: 'shadow-[0_0_30px_rgba(59,130,246,0.2)] border-blue-400/40',
+    green: 'shadow-[0_0_30px_rgba(34,197,94,0.2)] border-green-500/40',
+    purple: 'shadow-[0_0_30px_rgba(139,92,246,0.2)] border-purple-500/40',
   }
 
   return (
     <Card 
       className={cn(
-        'bg-black/80 backdrop-blur-xl border-2 transition-all duration-300 hover:scale-[1.01] sm:hover:scale-[1.02] flex flex-col',
+        'bg-white/70 backdrop-blur-xl border-2 transition-all duration-300 hover:scale-[1.01] sm:hover:scale-[1.02] flex flex-col',
         glowStyles[glowColor],
         className
       )}
     >
-      <div className="p-3 sm:p-4 border-b border-white/10 shrink-0">
-        <h3 className="text-sm sm:text-base md:text-lg font-bold text-cyan-400 tracking-wide uppercase">
+      <div className="p-3 sm:p-4 border-b border-slate-300/50 shrink-0">
+        <h3 className="text-sm sm:text-base md:text-lg font-bold text-blue-700 tracking-wide uppercase">
           {title}
         </h3>
       </div>

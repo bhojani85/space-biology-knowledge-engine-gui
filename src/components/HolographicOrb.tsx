@@ -10,54 +10,54 @@ export default function HolographicOrb() {
 
   useFrame((state) => {
     if (orbRef.current) {
-      orbRef.current.rotation.x = state.clock.elapsedTime * 0.2
-      orbRef.current.rotation.y = state.clock.elapsedTime * 0.3
+      orbRef.current.rotation.x = state.clock.elapsedTime * 0.1
+      orbRef.current.rotation.y = state.clock.elapsedTime * 0.15
     }
     if (glowRef.current) {
-      const pulse = Math.sin(state.clock.elapsedTime * 2) * 0.1 + 1
+      const pulse = Math.sin(state.clock.elapsedTime * 1.5) * 0.15 + 1
       glowRef.current.scale.setScalar(pulse)
     }
   })
 
   return (
     <group position={[0, 0, 0]}>
-      {/* Outer glow */}
+      {/* Outer soft glow - like sun through clouds */}
       <mesh ref={glowRef}>
-        <sphereGeometry args={[1.5, 32, 32]} />
+        <sphereGeometry args={[2, 32, 32]} />
         <meshBasicMaterial
-          color="#00ffff"
+          color="#93bbde"
           transparent
-          opacity={0.1}
+          opacity={0.15}
           side={THREE.BackSide}
         />
       </mesh>
 
-      {/* Main orb */}
+      {/* Main orb - soft blue/gray */}
       <mesh ref={orbRef}>
         <sphereGeometry args={[1, 64, 64]} />
         <meshStandardMaterial
-          color="#00ffff"
-          emissive="#00ffff"
-          emissiveIntensity={0.5}
-          roughness={0.2}
-          metalness={0.8}
+          color="#7ba5ca"
+          emissive="#9bb8d3"
+          emissiveIntensity={0.3}
+          roughness={0.4}
+          metalness={0.3}
           transparent
-          opacity={0.7}
+          opacity={0.6}
         />
       </mesh>
 
-      {/* Inner core */}
+      {/* Inner core - lighter */}
       <mesh>
         <sphereGeometry args={[0.7, 32, 32]} />
         <meshBasicMaterial
-          color="#ffffff"
+          color="#d4e3f0"
           transparent
-          opacity={0.3}
+          opacity={0.4}
         />
       </mesh>
 
-      {/* Point lights */}
-      <pointLight position={[0, 0, 0]} intensity={2} color="#00ffff" distance={5} />
+      {/* Soft point light */}
+      <pointLight position={[0, 0, 0]} intensity={1} color="#9bb8d3" distance={8} />
     </group>
   )
 }
