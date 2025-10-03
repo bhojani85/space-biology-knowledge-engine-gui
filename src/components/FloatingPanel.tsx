@@ -1,45 +1,40 @@
 "use client"
 
 import { ReactNode } from 'react'
-import { Card } from './ui/card'
-import { cn } from '@/lib/utils'
+import { motion } from 'framer-motion'
 
 interface FloatingPanelProps {
-  title: string
   children: ReactNode
+  title: string
+  glowColor?: 'cyan' | 'purple' | 'green'
   className?: string
-  glowColor?: string
 }
 
-export default function FloatingPanel({ 
-  title, 
-  children, 
-  className,
-  glowColor = 'blue'
-}: FloatingPanelProps) {
-  const glowStyles: Record<string, string> = {
-    cyan: 'shadow-[0_0_30px_rgba(59,130,246,0.2)] border-blue-400/40',
-    blue: 'shadow-[0_0_30px_rgba(59,130,246,0.2)] border-blue-400/40',
-    green: 'shadow-[0_0_30px_rgba(34,197,94,0.2)] border-green-500/40',
-    purple: 'shadow-[0_0_30px_rgba(139,92,246,0.2)] border-purple-500/40',
+export default function FloatingPanel({ children, title, glowColor = 'cyan', className = '' }: FloatingPanelProps) {
+  const glowClasses = {
+    cyan: 'glow-cyan',
+    purple: 'glow-purple',
+    green: 'glow-green'
   }
 
   return (
-    <Card 
-      className={cn(
-        'bg-white/70 backdrop-blur-xl border-2 transition-all duration-300 hover:scale-[1.01] sm:hover:scale-[1.02] flex flex-col',
-        glowStyles[glowColor],
-        className
-      )}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className={`relative rounded-xl backdrop-blur-md bg-black/40 border border-cyan-500/30 ${glowClasses[glowColor]} ${className}`}
     >
-      <div className="p-3 sm:p-4 border-b border-slate-300/50 shrink-0">
-        <h3 className="text-sm sm:text-base md:text-lg font-bold text-blue-700 tracking-wide uppercase">
+      {/* Header */}
+      <div className="border-b border-cyan-500/30 px-4 sm:px-6 py-3 sm:py-4">
+        <h2 className="text-base sm:text-lg md:text-xl font-bold text-cyan-400 tracking-wider">
           {title}
-        </h3>
+        </h2>
       </div>
-      <div className="p-3 sm:p-4 flex-1 overflow-auto min-h-0">
+      
+      {/* Content */}
+      <div className="p-4 sm:p-6 h-full overflow-auto scrollbar-hide">
         {children}
       </div>
-    </Card>
+    </motion.div>
   )
 }
