@@ -2,11 +2,11 @@
 
 import Scene3D from '@/components/Scene3D'
 import FloatingPanel from '@/components/FloatingPanel'
-import ChatbotInterface from '@/components/ChatbotInterface'
+import GraphVisualization from '@/components/GraphVisualization'
 import Navbar from '@/components/Navbar'
-import { Sparkles } from 'lucide-react'
+import { BarChart3 } from 'lucide-react'
 
-export default function Home() {
+export default function StatisticsPage() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-black via-blue-950/20 to-black">
       {/* 3D Background Scene */}
@@ -20,19 +20,20 @@ export default function Home() {
         {/* Header */}
         <header className="text-center mb-6 sm:mb-8 md:mb-12 pt-4 sm:pt-6 md:pt-8">
           <div className="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-            <Sparkles className="w-5 h-5 sm:w-6 md:w-8 sm:h-6 md:h-8 text-cyan-400 animate-pulse" />
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-green-400 bg-clip-text text-transparent">
-              Space Biology Engine
+            <BarChart3 className="w-5 h-5 sm:w-6 md:w-8 sm:h-6 md:h-8 text-purple-400 animate-pulse" />
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-green-400 bg-clip-text text-transparent">
+              Data Visualizations
             </h1>
-            <Sparkles className="w-5 h-5 sm:w-6 md:w-8 sm:h-6 md:h-8 text-purple-400 animate-pulse" />
           </div>
-          <p className="text-gray-400 text-sm sm:text-base md:text-lg px-4">NASA Research Console • AI-Powered Knowledge Discovery</p>
+          <p className="text-gray-400 text-sm sm:text-base md:text-lg px-4">
+            Interactive Charts & Analytics
+          </p>
         </header>
 
-        {/* Chatbot Panel */}
-        <div className="max-w-4xl mx-auto">
-          <FloatingPanel title="AI Research Assistant" glowColor="cyan" className="h-[500px] sm:h-[600px] lg:h-[700px]">
-            <ChatbotInterface />
+        {/* Content */}
+        <div className="max-w-5xl mx-auto">
+          <FloatingPanel title="Data Visualizations" glowColor="purple" className="w-full">
+            <GraphVisualization />
           </FloatingPanel>
         </div>
 
