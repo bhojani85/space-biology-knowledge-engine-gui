@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect, memo, useCallback } from 'react'
+import { useState, useRef, useEffect, memo, useCallback, SetStateAction } from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
@@ -154,7 +154,7 @@ function ChatbotInterface() {
       <div className="flex gap-2 shrink-0">
         <Input
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e: { target: { value: SetStateAction<string> } }) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask about space biology..."
           className="text-xs sm:text-sm bg-black/40 border-cyan-500/30 text-white placeholder:text-gray-500 focus:border-cyan-500 focus:ring-cyan-500/30"
