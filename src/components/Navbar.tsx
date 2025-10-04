@@ -1,10 +1,11 @@
 "use client"
 
+import { memo } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, User, Info, BarChart3 } from 'lucide-react'
 
-export default function Navbar() {
+function Navbar() {
   const pathname = usePathname()
 
   const links = [
@@ -50,3 +51,5 @@ export default function Navbar() {
     </nav>
   )
 }
+
+export default memo(Navbar)

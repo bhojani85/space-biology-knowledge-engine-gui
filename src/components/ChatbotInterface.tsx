@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, memo, useCallback } from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
@@ -13,7 +13,39 @@ interface Message {
   citations?: string[]
 }
 
-export default function ChatbotInterface() {
+// Memoize message component to prevent unnecessary re-renders
+const MessageBubble = memo(({ message }: { message: Message }) => (
+  <div
+    className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}
+  >
+    <div
+      className={`max-w-[85%] sm:max-w-[80%] rounded-xl sm:rounded-2xl p-3 sm:p-4 ${
+        message.isUser
+          ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-100'
+          : 'bg-purple-500/20 border border-purple-500/40 text-purple-100'
+      }`}
+    >
+      <p className="text-xs sm:text-sm leading-relaxed">{message.text}</p>
+      {message.citations && (
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3">
+          {message.citations.map((citation, idx) => (
+            <Badge
+              key={idx}
+              variant="outline"
+              className="text-[10px] sm:text-xs bg-cyan-500/10 border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/20 cursor-pointer"
+            >
+              {citation}
+            </Badge>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+))
+
+MessageBubble.displayName = 'MessageBubble'
+
+function ChatbotInterface() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -29,26 +61,25 @@ export default function ChatbotInterface() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
-  // Auto-scroll to bottom when new messages arrive
-  const scrollToBottom = () => {
+  // Memoize scroll functions
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
+  }, [])
 
-  // Check if user is near bottom
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     if (scrollContainerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current
       const isNearBottom = scrollHeight - scrollTop - clientHeight < 100
       setShowScrollButton(!isNearBottom)
     }
-  }
+  }, [])
 
   // Auto-scroll when messages change
   useEffect(() => {
     scrollToBottom()
-  }, [messages])
+  }, [messages, scrollToBottom])
 
-  const handleSend = async () => {
+  const handleSend = useCallback(async () => {
     if (!input.trim()) return
 
     const userMessage: Message = {
@@ -72,7 +103,13 @@ export default function ChatbotInterface() {
       setMessages(prev => [...prev, botMessage])
       setIsLoading(false)
     }, 1500)
-  }
+  }, [input])
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSend()
+    }
+  }, [handleSend])
 
   return (
     <div className="flex flex-col h-full min-h-0">
@@ -87,33 +124,7 @@ export default function ChatbotInterface() {
       >
         <div className="space-y-3 sm:space-y-4">
           {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}
-            >
-              <div
-                className={`max-w-[85%] sm:max-w-[80%] rounded-xl sm:rounded-2xl p-3 sm:p-4 ${
-                  message.isUser
-                    ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-100'
-                    : 'bg-purple-500/20 border border-purple-500/40 text-purple-100'
-                }`}
-              >
-                <p className="text-xs sm:text-sm leading-relaxed">{message.text}</p>
-                {message.citations && (
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3">
-                    {message.citations.map((citation, idx) => (
-                      <Badge
-                        key={idx}
-                        variant="outline"
-                        className="text-[10px] sm:text-xs bg-cyan-500/10 border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/20 cursor-pointer"
-                      >
-                        {citation}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
+            <MessageBubble key={message.id} message={message} />
           ))}
           {isLoading && (
             <div className="flex justify-start">
@@ -144,7 +155,7 @@ export default function ChatbotInterface() {
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+          onKeyDown={handleKeyDown}
           placeholder="Ask about space biology..."
           className="text-xs sm:text-sm bg-black/40 border-cyan-500/30 text-white placeholder:text-gray-500 focus:border-cyan-500 focus:ring-cyan-500/30"
           disabled={isLoading}
@@ -161,3 +172,5 @@ export default function ChatbotInterface() {
     </div>
   )
 }
+
+export default memo(ChatbotInterface)

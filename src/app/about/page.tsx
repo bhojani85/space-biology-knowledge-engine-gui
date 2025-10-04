@@ -1,16 +1,26 @@
 "use client"
 
-import Scene3D from '@/components/Scene3D'
+import { lazy, Suspense } from 'react'
 import FloatingPanel from '@/components/FloatingPanel'
 import DatasetBrowser from '@/components/DatasetBrowser'
 import Navbar from '@/components/Navbar'
 import { Database } from 'lucide-react'
 
+// Lazy load heavy 3D component
+const Scene3D = lazy(() => import('@/components/Scene3D'))
+
+// Loading fallback
+function Scene3DFallback() {
+  return <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black via-zinc-900/20 to-black" />
+}
+
 export default function AboutPage() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-black via-zinc-900/20 to-black">
-      {/* 3D Background Scene */}
-      <Scene3D />
+      {/* 3D Background Scene - Lazy loaded */}
+      <Suspense fallback={<Scene3DFallback />}>
+        <Scene3D />
+      </Suspense>
 
       {/* Navbar */}
       <Navbar />

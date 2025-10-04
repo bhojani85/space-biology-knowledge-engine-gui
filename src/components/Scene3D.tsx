@@ -10,7 +10,14 @@ export default function Scene3D() {
     <div className="absolute inset-0 -z-10">
       <Canvas
         camera={{ position: [0, 0, 8], fov: 50 }}
-        gl={{ alpha: true, antialias: true }}
+        gl={{ 
+          alpha: true, 
+          antialias: false, // Disable for better performance
+          powerPreference: "high-performance"
+        }}
+        dpr={[1, 1.5]} // Limit pixel ratio for performance
+        performance={{ min: 0.5 }} // Performance degradation threshold
+        frameloop="demand" // Only render when needed
       >
         <SpaceBackground />
         <HolographicOrb />
@@ -19,6 +26,7 @@ export default function Scene3D() {
           enablePan={false}
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
+          enableDamping={false} // Disable for better performance
         />
       </Canvas>
     </div>
