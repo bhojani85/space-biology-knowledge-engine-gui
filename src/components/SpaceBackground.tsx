@@ -49,10 +49,10 @@ function Stars() {
 function Centroids() {
   const centroidsRef = useRef<THREE.Group>(null)
 
-  useFrame((state) => {
+  useFrame((state: { clock: { getElapsedTime: () => any } }) => {
     if (centroidsRef.current) {
       const time = state.clock.getElapsedTime()
-      centroidsRef.current.children.forEach((centroid, i) => {
+      centroidsRef.current.children.forEach((centroid: { position: { x: number; y: number; z: number }; rotation: { x: number; y: number } }, i: number) => {
         centroid.position.x = Math.sin(time * 0.3 + i) * 15
         centroid.position.y = Math.cos(time * 0.2 + i) * 10
         centroid.position.z = Math.sin(time * 0.25 + i) * 8 - 10
@@ -93,7 +93,7 @@ function Centroids() {
 function Planet() {
   const planetRef = useRef<THREE.Mesh>(null)
 
-  useFrame((state) => {
+  useFrame((state: { clock: { getElapsedTime: () => number } }) => {
     if (planetRef.current) {
       planetRef.current.rotation.y = state.clock.getElapsedTime() * 0.1
     }
