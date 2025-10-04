@@ -3,6 +3,7 @@
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import FloatingPanel from '@/components/FloatingPanel'
+import DatasetBrowser from '@/components/DatasetBrowser'
 import Navbar from '@/components/Navbar'
 import { Rocket, Database, Brain, Sparkles } from 'lucide-react'
 
