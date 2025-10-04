@@ -7,7 +7,7 @@ import * as THREE from 'three'
 function Stars() {
   const starsRef = useRef<THREE.Points>(null)
 
-  useFrame((state) => {
+  useFrame((state: { clock: { getElapsedTime: () => number } }) => {
     if (starsRef.current) {
       starsRef.current.rotation.y = state.clock.getElapsedTime() * 0.02
       starsRef.current.rotation.x = state.clock.getElapsedTime() * 0.01
