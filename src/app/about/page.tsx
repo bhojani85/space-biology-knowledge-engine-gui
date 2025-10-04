@@ -1,26 +1,28 @@
 "use client"
 
-import { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import FloatingPanel from '@/components/FloatingPanel'
-import DatasetBrowser from '@/components/DatasetBrowser'
 import Navbar from '@/components/Navbar'
-import { Database } from 'lucide-react'
+import { Rocket, Database, Brain, Sparkles } from 'lucide-react'
 
-// Lazy load heavy 3D component
-const Scene3D = lazy(() => import('@/components/Scene3D'))
+// Use next/dynamic instead of React.lazy for better Next.js compatibility
+const Scene3D = dynamic(() => import('@/components/Scene3D'), {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black via-zinc-900/20 to-black">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="text-gray-500 animate-pulse">Loading 3D scene...</div>
+      </div>
+    </div>
+  )
+})
 
-// Loading fallback
-function Scene3DFallback() {
-  return <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black via-zinc-900/20 to-black" />
-}
-
-export default function AboutPage() {
+export default function About() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-black via-zinc-900/20 to-black">
-      {/* 3D Background Scene - Lazy loaded */}
-      <Suspense fallback={<Scene3DFallback />}>
-        <Scene3D />
-      </Suspense>
+      {/* 3D Background Scene - Dynamically loaded */}
+      <Scene3D />
 
       {/* Navbar */}
       <Navbar />
