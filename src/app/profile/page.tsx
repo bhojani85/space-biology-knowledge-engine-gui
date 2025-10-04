@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import FloatingPanel from '@/components/FloatingPanel'
 import Navbar from '@/components/Navbar'
+import UserDashboard from '@/components/UserDashboard'
 import { User, Mail, Calendar, Activity } from 'lucide-react'
 
 // Use next/dynamic instead of React.lazy for better Next.js compatibility
