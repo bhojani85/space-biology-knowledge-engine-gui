@@ -3,6 +3,7 @@
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import FloatingPanel from '@/components/FloatingPanel'
+import GraphVisualization from '@/components/GraphVisualization'
 import Navbar from '@/components/Navbar'
 import { BarChart3, TrendingUp, Database, Activity } from 'lucide-react'
 
